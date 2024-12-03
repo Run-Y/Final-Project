@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our System</title>
+    <style>
+        /* Reset margins and paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Basic layout style */
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background: #f0f4f8;
+            color: #333;
+        }
+
+        nav {
+            width: 250px;
+            background-color: #35424a;
+            color: #fff;
+            padding: 20px;
+        }
+
+        nav h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #455960;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background-color: #546a75;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #35424a;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        #graph-container {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 800px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #sea-level-form {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form input[type="button"] {
+            background: #35424a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        form input[type="button"]:hover {
+            background: #455960;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h3>Navigation</h3>
+        <a href="#" onclick="showSeaLevelPage()">Global Mean Sea Level</a>
+        <a href="#" onclick="showIceMassPage()">Ice Mass</a>
+    </nav>
+
+    <main>
+        <h1>Welcome to Our System</h1>
+        <p>Select an option from the left to see more details.</p>
+
+        <div id="graph-container">
+            <!-- This is where the graph will be displayed dynamically -->
+        </div>
+
+        <!-- Display Form for Sea Level -->
+        <div id="sea-level-form">
+            <form id="sea-level-form-content">
+                <label for="start_year">Start Year:</label>
+                <input type="number" id="start_year" name="start_year" required>
+                <label for="end_year">End Year:</label>
+                <input type="number" id="end_year" name="end_year" required>
+                <input type="button" value="Generate Plot & Predict" onclick="generateSeaLevelPlot()">
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function showSeaLevelPage() {
+            document.getElementById('sea-level-form').style.display = 'block';
+            document.getElementById('graph-container').innerHTML = '';  // Clear previous graph
+        }
+
+        function showIceMassPage() {
+            document.getElementById('sea-level-form').style.display = 'none';
+            document.getElementById('graph-container').innerHTML = '<h3>Ice Mass Page Coming Soon</h3>';
+        }
+
+        function generateSeaLevelPlot() {
+            var startYear = document.getElementById('start_year').value;
+            var endYear = document.getElementById('end_year').value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/global_mean_sea_level', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById('graph-container').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send('start_year=' + startYear + '&end_year=' + endYear);
+        }
+    </script>
+
+</body>
+</html>
