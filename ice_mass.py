@@ -3,9 +3,16 @@ import pandas as pd
 import plotly.graph_objs as go
 from sklearn.linear_model import LinearRegression
 
-def create_plot(start_year, end_year, file_name):
+def create_plot(start_year, end_year, ice_mass_type):
+
     # 根据选择的文件加载不同的数据
-    file_path = f'./data/{file_name}'
+    if ice_mass_type == "Antarctic":
+        file_path = './data/antarctica_mass_data.csv'
+    elif ice_mass_type == "Greenland":
+        file_path = './data/greenland_mass_data.csv'
+    else:
+        raise ValueError("Invalid ice_mass_type. Choose 'Antarctic' or 'Greenland'.")
+
     try:
         data = pd.read_csv(file_path)
     except FileNotFoundError:
@@ -15,7 +22,7 @@ def create_plot(start_year, end_year, file_name):
     filtered_data = data[(data['TIME (year.decimal)'] >= start_year) & (data['TIME (year.decimal)'] <= end_year)]
 
     # 根据选择的数据集设置纵坐标
-    if file_name == "antarctica_mass_data.csv":
+    if ice_mass_type == "Antarctic":
         mass_column = 'Antarctic mass (Gigatonnes)'
         uncertainty_column = 'Antarctic mass 1 - sigma uncertainty (Gigatonnes)'
         title = "Antarctic Mass"
@@ -148,10 +155,10 @@ def create_prediction_plot(start_year, end_year, predict_years, ice_mass_type):
 
 # 调用示例
 if __name__ == "__main__":
-    start_year = 2021
+    start_year = 2002
     end_year = 2022
     predict_years = 10
     ice_mass_type = "Greenland"  # 或者 "Greenland"
 
-    figure = create_prediction_plot(start_year, end_year, predict_years, ice_mass_type)
+    figure = create_plot(start_year, end_year, ice_mass_type)
     figure.show()  # 显示图表
