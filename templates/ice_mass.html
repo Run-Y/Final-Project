@@ -2,9 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ice Sheets Mass Visualization</title>
+    <link rel="stylesheet" href="../static/css/ice_mass.css"> <!-- 引入外部CSS文件 -->
 </head>
 <body>
+    <h1>Ice Sheets Mass Change</h1>
 
+    <!-- 表单让用户输入年份范围和选择数据文件 -->
+    <form action="/ice_mass" method="post">
+        <label for="data_file">Choose Data File: </label>
+        <select id="data_file" name="data_file" required>
+            <option value="" disabled selected>Please choose a place</option>
+            <option value="antarctica_mass_data.csv">Antarctica</option>
+            <option value="greenland_mass_data.csv">Greenland</option>
+        </select>
+
+        <label for="start_year">Start Year: </label>
+        <input type="number" id="start_year" name="start_year" min="2002" max="2024" required>
+
+        <label for="end_year">End Year: </label>
+        <input type="number" id="end_year" name="end_year" min="2002" max="2024" required>
+
+        <label for="predict_years">Predict Years: </label>
+        <input type="number" id="predict_years" name="predict_years" min="0" max="30" required>
+
+        <div class="button-container">
+            <button type="submit">Generate Graph</button>
+        </div>
+    </form>
+
+    <div class="graph-container">
+        <!-- 在这里嵌入 Plotly 图表 -->
+        {{ graph_html | safe }}
+    </div>
 </body>
 </html>
