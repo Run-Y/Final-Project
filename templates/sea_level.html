@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Mean Sea Level Change</title>
+    <!-- 引入专门为 sea_level 页面设置的 CSS -->
+    <link rel="stylesheet" href="../static/css/sea_level.css">
+</head>
+<body>
+    <h1>Global Mean Sea Level Change</h1>
+
+    <!-- 表单让用户输入年份 -->
+    <form action="/sea_level" method="post">
+        <label for="start_year">Start Year: </label>
+        <input type="number" id="start_year" name="start_year" min="1993" max="2024" required>
+
+        <label for="end_year">End Year: </label>
+        <input type="number" id="end_year" name="end_year" min="1993" max="2024" required>
+
+        <label for="predict_years">Predict Years: </label>
+        <input type="number" id="predict_years" name="predict_years" min="0" max="30" required>
+
+        <div class="button-container">
+            <button type="submit">Generate Graph</button>
+        </div>
+    </form>
+
+    <div class="graph-container">
+        <!-- 在这里嵌入 Plotly 图表 -->
+        {{ graph_html | safe }}
+    </div>
+
+</body>
+</html>
