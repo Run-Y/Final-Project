@@ -153,6 +153,8 @@ def create_prediction_plot(start_year, end_year, predict_years, ice_mass_type):
     figure = go.Figure(data=[trace_actual, trace_predicted], layout=layout)
     return figure
 
+
+
 # 调用示例
 if __name__ == "__main__":
     start_year = 2002
