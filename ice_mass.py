@@ -1,7 +1,10 @@
+import random
+
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
 from sklearn.linear_model import LinearRegression
+import language_library as ll
 
 def create_plot(start_year, end_year, ice_mass_type):
 
@@ -153,7 +156,12 @@ def create_prediction_plot(start_year, end_year, predict_years, ice_mass_type):
     figure = go.Figure(data=[trace_actual, trace_predicted], layout=layout)
     return figure
 
+def generate_analysis():
+    return random.choice(ll.ANALYSIS_ICE)
 
+
+def generate_advice():
+    return random.choice(ll.ADVICES_ICE)
 
 # 调用示例
 if __name__ == "__main__":
