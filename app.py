@@ -29,8 +29,11 @@ def sea_level():
         # 将图表转换为 HTML 字符串
         graph_html = pio.to_html(figure, full_html=False)
 
+        analysis = sl.generate_analysis()
+        advice = sl.generate_advice()
+
         # 渲染 sea_level.html，同时传入生成的图表
-        return render_template('sea_level.html', graph_html=graph_html)
+        return render_template('sea_level.html', graph_html=graph_html, analysis = analysis, advice = advice)
 
     # 如果是 GET 请求，直接显示页面
     return render_template('sea_level.html', graph_html="")
@@ -67,8 +70,11 @@ def ice_mass():
         # 将图表转换为 HTML
         graph_html = Markup(figure.to_html(full_html=False, include_plotlyjs='cdn'))
 
+        analysis = im.generate_analysis()
+        advice = im.generate_advice()
+
         # 渲染模板，嵌入图表
-        return render_template('ice_mass.html', graph_html=graph_html)
+        return render_template('ice_mass.html', graph_html=graph_html, analysis = analysis, advice = advice)
 
     # 默认 GET 请求直接返回表单页面
     return render_template('ice_mass.html', graph_html="")
