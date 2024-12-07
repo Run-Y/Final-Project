@@ -62,3 +62,36 @@ button:hover {
 .graph-container {
     margin-top: 40px;
 }
+
+/* 警告和建议区域样式 */
+.analysis-advice {
+    display: flex; /* 使用 Flexbox 布局 */
+    justify-content: space-between; /* 两边对齐，留出空白 */
+    gap: 20px; /* 设置框之间的间距 */
+    margin-top: 20px;
+}
+
+/* 警告框和建议框样式 */
+.analysis-box, .advice-box {
+    flex: 1; /* 让每个框占据相等宽度 */
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f0f8ff; /* 使用浅蓝色背景 */
+    border: 1px solid #d1e7ff; /* 浅蓝边框 */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+    max-width: 48%; /* 限制框的最大宽度 */
+}
+
+.analysis-box h2, .advice-box h2 {
+    margin: 0;
+    color: #0d6efd; /* 深蓝标题颜色 */
+    font-size: 1.2rem;
+}
+
+.analysis p, .advice-box p {
+    margin-top: 10px;
+    line-height: 1.5;
+    color: #495057; /* 深灰文本颜色 */
+}
+
+

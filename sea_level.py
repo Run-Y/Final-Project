@@ -1,7 +1,10 @@
+import random
+
 import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 from sklearn.linear_model import LinearRegression
+import language_library as ll
 
 
 def create_plot(start_year, end_year):
@@ -123,6 +126,14 @@ def create_prediction_plot(start_year, end_year, predict_years):
     # 创建图表对象
     figure = go.Figure(data=[trace_actual, trace_predicted], layout=layout)
     return figure
+
+def generate_analysis():
+
+    return random.choice(ll.ANALYSIS_SEA)
+
+def generate_advice():
+
+    return random.choice(ll.ADVICES_SEA)
 
 
 

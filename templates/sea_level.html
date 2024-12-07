@@ -31,5 +31,21 @@
         {{ graph_html | safe }}
     </div>
 
+    <div class="analysis-advice">
+        {% if analysis and advice %}
+            <!-- 警告框 -->
+            <div class="analysis-box">
+                <h2>Analysis</h2>
+                <p>{{ analysis }}</p>
+            </div>
+
+            <!-- 建议框 -->
+            <div class="advice-box">
+                <h2>Advice</h2>
+                <p>{{ advice }}</p>
+            </div>
+        {% endif %}
+    </div>
+
 </body>
 </html>
