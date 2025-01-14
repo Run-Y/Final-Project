@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, Response
 from markupsafe import Markup
 import plotly.io as pio
 import ice_mass as im
 import sea_level as sl
+import Chatbot
 
 app = Flask(__name__)
 
@@ -78,6 +79,30 @@ def ice_mass():
 
     # 默认 GET 请求直接返回表单页面
     return render_template('ice_mass.html', graph_html="")
+
+@app.route('/Chatbot', methods=['POST'])
+def get_chatbot_response():
+    try:
+        # 获取用户发送的消息
+        data = request.get_json()
+        user_message = data.get('message')
+
+        if not user_message:
+            return Response("Sorry, I did not receive your message.", content_type='text/plain')
+
+        # 获取 Chatbot 的回复
+        bot_reply = Chatbot.get_response(user_message)
+
+        # 确保返回的是字符串
+        if not isinstance(bot_reply, str):
+            bot_reply = str(bot_reply)
+
+        return Response(bot_reply, content_type='text/plain')
+
+    except Exception as e:
+        # 返回错误消息
+        error_message = f"An error occurred: {str(e)}"
+        return Response(error_message, content_type='text/plain', status=500)
 
 if __name__ == '__main__':
     app.run(debug=True)

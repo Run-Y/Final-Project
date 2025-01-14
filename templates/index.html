@@ -23,7 +23,23 @@
         <!-- This is where the dynamically loaded content will be displayed -->
     </main>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- 悬浮聊天按钮 -->
+    <button id="chatbotButton" class="chatbot-button">Chat</button>
+
+    <!-- 聊天窗口 -->
+    <div id="chatbotWindow" class="chatbot-window" style="display:none;">
+        <div class="chatbot-header">
+            <span>Chatbot</span>
+            <button id="closeChatbotWindow">X</button>
+        </div>
+        <div id="chatbotMessages" class="chatbot-messages"></div>
+        <textarea id="userMessage" placeholder="Type your message..."></textarea>
+        <button id="sendMessage">Send</button>
+    </div>
+
+
+    <!-- 引入外部 JavaScript 文件 -->
+    <script src="../static/js/script.js"></script>
 
 </body>
 </html>
