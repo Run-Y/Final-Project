@@ -127,14 +127,93 @@ def create_prediction_plot(start_year, end_year, predict_years):
     figure = go.Figure(data=[trace_actual, trace_predicted], layout=layout)
     return figure
 
-def generate_analysis():
+def generate_analysis(start_year, end_year):
+    """
+    根据起始年份和结束年份生成海平面变化的分析。
 
-    return random.choice(ll.ANALYSIS_SEA)
+    参数:
+        start_year: int 起始年份
+        end_year: int 结束年份
 
-def generate_advice():
+    返回:
+        str 包含分析结果的字符串
+    """
+    # 读取数据
+    file_path = './data/gmsl_data.csv'
+    data = pd.read_csv(file_path)
 
-    return random.choice(ll.ADVICES_SEA)
+    # 筛选指定年份范围内的数据
+    filtered_data = data[(data['year_fraction'] >= start_year) & (data['year_fraction'] <= end_year)]
 
+    # 如果没有数据，返回提示
+    if filtered_data.empty:
+        return f"No data available for the years {start_year} to {end_year}."
+
+    # 计算分析数据
+    start_gmsl = filtered_data['GMSL_GIA_applied'].iloc[0]
+    end_gmsl = filtered_data['GMSL_GIA_applied'].iloc[-1]
+    gmsl_change = end_gmsl - start_gmsl
+    mean_gmsl = filtered_data['GMSL_GIA_applied'].mean()
+    max_gmsl = filtered_data['GMSL_GIA_applied'].max()
+    min_gmsl = filtered_data['GMSL_GIA_applied'].min()
+
+    # 从模板中随机选择一个句式
+    template = random.choice(ll.ANALYSIS_SEA_Sentence_Templates)
+    analysis = template.format(
+        start_year=start_year,
+        end_year=end_year,
+        start_gmsl=start_gmsl,
+        end_gmsl=end_gmsl,
+        gmsl_change=gmsl_change,
+        mean_gmsl=mean_gmsl,
+        max_gmsl=max_gmsl,
+        min_gmsl=min_gmsl
+    )
+
+    return analysis
+
+
+def generate_advice(start_year, end_year):
+    """
+    根据指定的年份范围，从气象灾难语料库中随机选择三个气象灾难，并给出相关建议。
+
+    参数:
+        start_year: int 起始年份
+        end_year: int 结束年份
+
+    返回:
+        str 包含气象灾难事件和建议的字符串
+    """
+    # 筛选指定年份范围内的气象灾难
+    disasters_in_range = {year: event for year, event in ll.climate_disasters.items() if start_year <= year <= end_year}
+
+    # 如果指定范围内没有灾难事件
+    if not disasters_in_range:
+        return f"No significant meteorological disasters occurred between {start_year} and {end_year}."
+
+    # 随机选择三个气象灾难
+    selected_years = random.sample(list(disasters_in_range.keys()), 2)
+    selected_disasters = [disasters_in_range[year] for year in selected_years]
+
+    # 为每个灾难生成相关建议
+    advice = []
+    for year in selected_years:
+        advice.append(ll.environmental_recommendations.get(year, "No specific advice available."))
+
+    # 返回完整的分析和建议
+    result = f"From {start_year} to {end_year}, the following meteorological disasters have been observed:\n"
+    for disaster in selected_disasters:
+        result += f"{disaster}\n"
+        result += '\n'
+
+    # 添加建议部分
+    result += "\nAdvice:\n"
+    result += '\n'
+    for advice_text in advice:
+        result += f"{advice_text}\n"
+        result += '\n'
+
+    return result
 
 
 

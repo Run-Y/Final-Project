@@ -85,25 +85,42 @@ div {
     margin-top: 20px;
 }
 
-/* 警告框和建议框样式 */
 .analysis-box, .advice-box {
-    flex: 1; /* 让每个框占据相等宽度 */
+    flex: 1;
     padding: 15px;
     border-radius: 8px;
-    background-color: #f0f8ff; /* 使用浅蓝色背景 */
-    border: 1px solid #d1e7ff; /* 浅蓝边框 */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-    max-width: 48%; /* 限制框的最大宽度 */
+    background-color: #f0f8ff;
+    border: 1px solid #d1e7ff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 48%;
 }
 
 .analysis-box h2, .advice-box h2 {
     margin: 0;
-    color: #0d6efd; /* 深蓝标题颜色 */
+    color: #0d6efd;
     font-size: 1.2rem;
+    text-align: left; /* 左对齐标题 */
 }
 
-.analysis p, .advice-box p {
+.analysis-box p, .advice-box p {
     margin-top: 10px;
     line-height: 1.5;
-    color: #495057; /* 深灰文本颜色 */
+    color: #495057;
+    text-align: left; /* 左对齐段落文本 */
 }
+
+/* 添加的文本样式 */
+.disclaimer {
+    background-color: #f8f9fa; /* 浅灰色背景 */
+    color: #6c757d; /* 灰色文本 */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+    margin-top: 20px;
+    font-size: 16px; /* 增大字体 */
+    line-height: 1.8; /* 增加行间距 */
+    text-align: center;
+    max-width: 500px; /* 与表单和其他框的宽度一致 */
+    margin: 20px auto; /* 居中显示 */
+}
+

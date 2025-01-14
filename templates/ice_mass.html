@@ -25,12 +25,17 @@
         <input type="number" id="end_year" name="end_year" min="2002" max="2024" required>
 
         <label for="predict_years">Predict Years: </label>
-        <input type="number" id="predict_years" name="predict_years" min="0" max="30" required>
+        <input type="number" id="predict_years" name="predict_years" min="0" max="100" required>
 
         <div class="button-container">
             <button type="submit">Generate Graph</button>
         </div>
     </form>
+
+    <!-- 免责声明文本 -->
+    <div class="disclaimer">
+        This system provides trend predictions based on current data and assumptions. Please note that the model cannot accurately predict when the ice sheet mass will reach zero or stabilize completely. The prediction results reflect trends rather than exact future values.
+    </div>
 
     <div class="graph-container">
         <!-- 在这里嵌入 Plotly 图表 -->

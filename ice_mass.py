@@ -156,12 +156,112 @@ def create_prediction_plot(start_year, end_year, predict_years, ice_mass_type):
     figure = go.Figure(data=[trace_actual, trace_predicted], layout=layout)
     return figure
 
-def generate_analysis():
-    return random.choice(ll.ANALYSIS_ICE)
+def generate_analysis(start_year, end_year, ice_mass_type):
+    """
+    根据用户选择的时间段，分析冰层质量的变化并生成描述。
+
+    参数:
+        start_year: int 起始年份
+        end_year: int 结束年份
+        ice_mass_type: str 冰层类型（'Antarctic' 或 'Greenland'）
+
+    返回:
+        str 包含分析结果的字符串
+    """
+    # 根据选择的冰山类型设置文件路径
+    if ice_mass_type == "Antarctic":
+        file_path = './data/antarctica_mass_data.csv'
+    elif ice_mass_type == "Greenland":
+        file_path = './data/greenland_mass_data.csv'
+    else:
+        raise ValueError("Invalid ice_mass_type. Choose 'Antarctic' or 'Greenland'.")
+
+    # 读取数据
+    try:
+        data = pd.read_csv(file_path)
+    except FileNotFoundError:
+        return f"Data file for {ice_mass_type} not found."
+
+    # 筛选指定年份范围内的数据
+    filtered_data = data[(data['TIME (year.decimal)'] >= start_year) & (data['TIME (year.decimal)'] <= end_year)]
+
+    # 如果没有数据，返回提示
+    if filtered_data.empty:
+        return f"No data available for the years {start_year} to {end_year} in {ice_mass_type}."
+
+    # 数据分析
+    start_mass = filtered_data.iloc[0, 1]  # 起始值
+    end_mass = filtered_data.iloc[-1, 1]  # 结束值
+    total_change = end_mass - start_mass  # 总变化量
+    total_change_abs = abs(total_change)  # 总变化量的绝对值
+    average_change_rate = total_change / (end_year - start_year)  # 平均变化率（每年）
+    max_mass = filtered_data.iloc[:, 1].max()  # 最大值
+    min_mass = filtered_data.iloc[:, 1].min()  # 最小值
+
+    # 判断趋势
+    if abs(total_change) < (0.2 * abs(max_mass - min_mass)):  # 如果总变化量较小
+        trend = "relatively stable with minor fluctuations"
+    elif total_change < 0:  # 如果变化为下降
+        trend = "a consistent decreasing trend"
+    else:  # 如果变化为上升
+        trend = "an increasing trend"
+
+    # 使用模板生成自然语言分析
+    analysis = random.choice(ll.ANALYSIS_ICE_Analysis_Templates).format(
+        start_year=start_year,
+        end_year=end_year,
+        ice_mass_type=ice_mass_type,
+        start_mass=start_mass,
+        end_mass=end_mass,
+        total_change_abs=total_change_abs,
+        average_change_rate=average_change_rate,
+        trend=trend
+    )
+
+    return analysis
 
 
-def generate_advice():
-    return random.choice(ll.ADVICES_ICE)
+def generate_advice(start_year, end_year):
+    """
+    根据指定的年份范围，从气象灾难语料库中随机选择三个气象灾难，并给出相关建议。
+
+    参数:
+        start_year: int 起始年份
+        end_year: int 结束年份
+
+    返回:
+        str 包含气象灾难事件和建议的字符串
+    """
+    # 筛选指定年份范围内的气象灾难
+    disasters_in_range = {year: event for year, event in ll.climate_disasters.items() if start_year <= year <= end_year}
+
+    # 如果指定范围内没有灾难事件
+    if not disasters_in_range:
+        return f"No significant meteorological disasters occurred between {start_year} and {end_year}."
+
+    # 随机选择三个气象灾难
+    selected_years = random.sample(list(disasters_in_range.keys()), 2)
+    selected_disasters = [disasters_in_range[year] for year in selected_years]
+
+    # 为每个灾难生成相关建议
+    advice = []
+    for year in selected_years:
+        advice.append(ll.environmental_recommendations.get(year, "No specific advice available."))
+
+    # 返回完整的分析和建议
+    result = f"From {start_year} to {end_year}, the following meteorological disasters have been observed:\n"
+    for disaster in selected_disasters:
+        result += f"{disaster}\n"
+        result += '\n'
+
+    # 添加建议部分
+    result += "\nAdvice:\n"
+    result += '\n'
+    for advice_text in advice:
+        result += f"{advice_text}\n"
+        result += '\n'
+
+    return result
 
 # 调用示例
 if __name__ == "__main__":
